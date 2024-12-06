@@ -4,24 +4,51 @@ using UnityEngine.XR.ARFoundation;
 
 public class Manager : MonoBehaviour
 {
-    public GameObject CarPrefab;
+    // public GameObject CarPrefab;
     public ReticleBehaviour Reticle;
     public DrivingSurfaceManager DrivingSurfaceManager;
+    public GameObject[] ARObject; //AR顯示物件
 
-    public CarBehaviour Car;
+    // public CarBehaviour Car;
+    public GameObject spawnedObject;
 
     public GameObject 物件;
 
+    void Start()
+    {
+        if (PlayerPrefs.HasKey("TrackedImageIndex"))
+        {
+            int trackedImageIndex = PlayerPrefs.GetInt("TrackedImageIndex");
+            if (trackedImageIndex >= 0 && trackedImageIndex < ARObject.Length)
+            {
+                // 在空間中生成物件
+                spawnedObject = Instantiate(ARObject[trackedImageIndex]);
+                spawnedObject.transform.position = Vector3.zero; // 設定生成位置
+                spawnedObject.transform.rotation = Quaternion.identity;
+
+                Debug.Log($"成功生成物件，索引：{trackedImageIndex}");
+            }
+            else
+            {
+                Debug.LogWarning("無效的 AR 物件索引！");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("沒有儲存的 AR 物件索引！");
+        }
+    }
+
     private void Update()
     {
-        if (Car == null && WasTapped() && Reticle.CurrentPlane != null)
-        {
-            var obj = GameObject.Instantiate(CarPrefab);
-            Car = obj.GetComponent<CarBehaviour>();
-            Car.Reticle = Reticle;
-            Car.transform.position = Reticle.transform.position;
-            DrivingSurfaceManager.LockPlane(Reticle.CurrentPlane);
-        }
+        //if (Car == null && WasTapped() && Reticle.CurrentPlane != null)
+        //{
+        //    var obj = GameObject.Instantiate(CarPrefab);
+        //    Car = obj.GetComponent<CarBehaviour>();
+        //    Car.Reticle = Reticle;
+        //    Car.transform.position = Reticle.transform.position;
+        //    DrivingSurfaceManager.LockPlane(Reticle.CurrentPlane);
+        //}
     }
 
     private bool WasTapped()

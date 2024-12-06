@@ -13,7 +13,7 @@ public class _TrackedImage : MonoBehaviour
     public Text infotext;
 
     private GameObject currentObject = null; // 當前顯示的物件
-    public int trackedImageCount = -1; // 紀錄掃描到的物件編號
+    private int trackedImageCount = -1; // 紀錄掃描到的物件編號
     private bool isObjectDisplayed = false; // 物件是否已顯示
 
     public GameObject confirmbtn;
@@ -204,6 +204,8 @@ public class _TrackedImage : MonoBehaviour
     public void confirmbtn_fuc()
     {
         ARTrackedImageManager.trackedImagesChanged -= OnTrackedImagesChanged;
+        PlayerPrefs.SetInt("TrackedImageIndex", trackedImageCount); //儲存AR的編號"trackedImageCount"
+        PlayerPrefs.Save();
         SceneManager.LoadScene("ar_page02");
     }
 
