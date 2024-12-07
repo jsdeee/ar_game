@@ -19,11 +19,13 @@ public class ReticleBehaviour : MonoBehaviour
 
     private int trackedImageIndex;
     public GameObject SpawnButton; // 按鈕用來建立物件
+    public GameObject JoystickObject;
 
     private void Start()
     {
         // 設置按鈕初始狀態為隱藏
         SpawnButton.SetActive(false);
+        //JoystickObject.SetActive(false);
 
         if (PlayerPrefs.HasKey("TrackedImageIndex"))
         {
@@ -70,7 +72,7 @@ public class ReticleBehaviour : MonoBehaviour
             transform.position = hit.Value.pose.position;
 
             // 設置物件的方向與相機一致
-            Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y+180, 0);
+            Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
 
 
             // 顯示預覽物件
@@ -109,6 +111,7 @@ public class ReticleBehaviour : MonoBehaviour
             // 隱藏預覽物件和按鈕
             PreviewObject.SetActive(false);
             SpawnButton.SetActive(false);
+            JoystickObject.SetActive(true);
         }
     }
 
