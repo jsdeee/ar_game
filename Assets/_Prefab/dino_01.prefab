@@ -46,8 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25cfedc9365223b4192520c13e42b8f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  virtualJoystick: {fileID: 3774042615158946320, guid: 4d2c040fd6c42ef4ebd17b549684d1dc, type: 3}
+  virtualJoystick: {fileID: 0}
   Speed: 10
+  Speedfactor: 0.05
   RotateSpeed: 1
 --- !u!143 &2402479396017928372
 CharacterController:
@@ -249,7 +250,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
-  virtualJoystick: {fileID: 3774042615158946320, guid: 4d2c040fd6c42ef4ebd17b549684d1dc, type: 3}
 --- !u!4 &2771132732841121290 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6279471399276436176, guid: fd03a296e0bd90343baab9c1aa106c37, type: 3}

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class MyAnimatorController : MonoBehaviour
 {
     public Animator animator;
-    public VirtualJoystick virtualJoystick; // 虛擬搖桿
+    private VirtualJoystick virtualJoystick; // 虛擬搖桿 (私有)
 
     // private bool isRun = false;
 
@@ -20,6 +20,7 @@ public class MyAnimatorController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (virtualJoystick == null) return; // 如果沒有虛擬搖桿，跳過
         // 取得搖桿的輸出方向
         Vector2 direction = virtualJoystick.inputDirection;
 
@@ -47,6 +48,11 @@ public class MyAnimatorController : MonoBehaviour
         //    ShowIdle();
         //}
     }
+    //新增方法讓ReticleBehaviour在生成物件時，可以從外部設定虛擬搖桿
+    public void SetVirtualJoystick(VirtualJoystick joystick)
+    {
+        this.virtualJoystick = joystick; // 設置虛擬搖桿
+    }
 
     private void ShowAttack()
     {
@@ -64,4 +70,6 @@ public class MyAnimatorController : MonoBehaviour
         // 設定動畫為靜止
         animator.SetBool("isRun", false);
     }
+
+
 }

@@ -19,7 +19,8 @@ public class ReticleBehaviour : MonoBehaviour
 
     private int trackedImageIndex;
     public GameObject SpawnButton; // 按鈕用來建立物件
-    public GameObject JoystickObject;
+    // public GameObject JoystickObject;
+    public VirtualJoystick joystick; // 在 Canvas 中的虛擬搖桿
 
     private void Start()
     {
@@ -101,6 +102,11 @@ public class ReticleBehaviour : MonoBehaviour
     {
         if (CurrentPlane != null && PreviewObject != null)
         {
+            if (joystick == null)
+            {
+                Debug.LogError("Prefab 或 Joystick 未設置！");
+                return;
+            }
             // var obj = GameObject.Instantiate(ARObject[trackedImageIndex]);
             // obj.transform.position = transform.position;
             // 真正生成物件
@@ -108,10 +114,30 @@ public class ReticleBehaviour : MonoBehaviour
             SpawnedObject.SetActive(true);
             DrivingSurfaceManager.LockPlane(CurrentPlane);
 
+            // 動態設定虛擬搖桿
+            PlayerMovement playerMovement = SpawnedObject.GetComponent<PlayerMovement>();
+            if (playerMovement != null)
+            {
+                playerMovement.SetVirtualJoystick(joystick); // 將 joystick 傳遞到物件
+            }
+
+            // 設置第一個子物件的虛擬搖桿
+            if (SpawnedObject.transform.childCount > 0)
+            {
+                Transform firstChild = SpawnedObject.transform.GetChild(0);
+                MyAnimatorController animatorController = firstChild.GetComponent<MyAnimatorController>();
+                if (animatorController != null)
+                {
+                    animatorController.SetVirtualJoystick(joystick);
+                    Debug.Log("已將虛擬搖桿傳遞給第一個子物件的 MyAnimatorController");
+                }
+            }
+
+
             // 隱藏預覽物件和按鈕
             PreviewObject.SetActive(false);
             SpawnButton.SetActive(false);
-            JoystickObject.SetActive(true);
+            // JoystickObject.SetActive(true);
         }
     }
 

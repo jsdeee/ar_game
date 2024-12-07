@@ -380,7 +380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1760703bbd54c04488a8d10600262ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlanePrefab: {fileID: 0}
+  m_PlanePrefab: {fileID: 2080369339933002901, guid: 5c528bf17058b47ba8da01f86c68d6d9, type: 3}
   m_DetectionMode: -1
 --- !u!114 &376151913
 MonoBehaviour:
@@ -575,7 +575,7 @@ MonoBehaviour:
   - {fileID: 941251281871373887, guid: 8244d235181e3aa40ab9654b0207f1f1, type: 3}
   - {fileID: 941251281871373887, guid: 8244d235181e3aa40ab9654b0207f1f1, type: 3}
   SpawnButton: {fileID: 1399460647}
-  JoystickObject: {fileID: 2404269031456340191, guid: 4d2c040fd6c42ef4ebd17b549684d1dc, type: 3}
+  joystick: {fileID: 1003691489}
 --- !u!1 &742765436
 GameObject:
   m_ObjectHideFlags: 0
@@ -1706,7 +1706,7 @@ PrefabInstance:
     - target: {fileID: 9179634959677263473, guid: 8244d235181e3aa40ab9654b0207f1f1, type: 3}
       propertyPath: virtualJoystick
       value: 
-      objectReference: {fileID: 1003691489}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
