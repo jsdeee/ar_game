@@ -11,6 +11,7 @@ public class ReticleBehaviour : MonoBehaviour
 {
     public GameObject PreviewObject; // 預覽的 3D 物件
     public GameObject SpawnedObject; // 真正生成的物件
+    private bool isObjectCreated = false; // 確認是否已真正生成的物件
     // public GameObject Child;
     public DrivingSurfaceManager DrivingSurfaceManager;
     public ARPlane CurrentPlane;
@@ -19,14 +20,14 @@ public class ReticleBehaviour : MonoBehaviour
 
     private int trackedImageIndex;
     public GameObject SpawnButton; // 按鈕用來建立物件
-    // public GameObject JoystickObject;
-    public VirtualJoystick joystick; // 在 Canvas 中的虛擬搖桿
+    public GameObject JoystickObject;  // 存放在Canvas中JoystickObject的物件
+    public VirtualJoystick joystick; // 把joystick在 Canvas 中的虛擬搖桿腳本拉過來，之後會動態生成傳給生成物件
 
     private void Start()
     {
         // 設置按鈕初始狀態為隱藏
         SpawnButton.SetActive(false);
-        //JoystickObject.SetActive(false);
+        JoystickObject.SetActive(false);
 
         if (PlayerPrefs.HasKey("TrackedImageIndex"))
         {
@@ -77,15 +78,17 @@ public class ReticleBehaviour : MonoBehaviour
 
 
             // 顯示預覽物件
-            if (PreviewObject != null)
+            if (PreviewObject != null && isObjectCreated != true)
             {
                 PreviewObject.SetActive(true);
                 PreviewObject.transform.position = transform.position;
                 PreviewObject.transform.rotation = cameraRotation; // 使用相機方向的旋轉
+                // 顯示建立按鈕
+                SpawnButton.SetActive(true);
             }
 
             // 顯示建立按鈕
-            SpawnButton.SetActive(true);
+            // SpawnButton.SetActive(true);
         }
         else
         {
@@ -100,6 +103,7 @@ public class ReticleBehaviour : MonoBehaviour
 
     public void createObject()
     {
+        JoystickObject.SetActive(true);
         if (CurrentPlane != null && PreviewObject != null)
         {
             if (joystick == null)
@@ -132,6 +136,8 @@ public class ReticleBehaviour : MonoBehaviour
                     Debug.Log("已將虛擬搖桿傳遞給第一個子物件的 MyAnimatorController");
                 }
             }
+
+            isObjectCreated = true;
 
 
             // 隱藏預覽物件和按鈕

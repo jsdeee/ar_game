@@ -575,6 +575,7 @@ MonoBehaviour:
   - {fileID: 941251281871373887, guid: 8244d235181e3aa40ab9654b0207f1f1, type: 3}
   - {fileID: 941251281871373887, guid: 8244d235181e3aa40ab9654b0207f1f1, type: 3}
   SpawnButton: {fileID: 1399460647}
+  JoystickObject: {fileID: 1443659550}
   joystick: {fileID: 1003691489}
 --- !u!1 &742765436
 GameObject:
@@ -1030,7 +1031,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3774042615158946320, guid: 4d2c040fd6c42ef4ebd17b549684d1dc, type: 3}
   m_PrefabInstance: {fileID: 67711614641909603}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1443659550}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da513e7c923556d4b8b1f0e46201c560, type: 3}
@@ -1314,6 +1315,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1399460647}
   m_CullTransparentMesh: 1
+--- !u!1 &1443659550 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2404269031456340191, guid: 4d2c040fd6c42ef4ebd17b549684d1dc, type: 3}
+  m_PrefabInstance: {fileID: 67711614641909603}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1577864855
 GameObject:
   m_ObjectHideFlags: 0
