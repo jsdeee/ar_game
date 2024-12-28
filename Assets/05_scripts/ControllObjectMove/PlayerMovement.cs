@@ -1,71 +1,101 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public VirtualJoystick virtualJoystick; // µêÀÀ·n±ìªº¤Ş¥Î
+    public VirtualJoystick virtualJoystick; // è™›æ“¬æ–æ¡¿çš„å¼•ç”¨
     private CharacterController controller;
     public float Speed = 1f;
     public float Speedfactor = 0.05f;
     public float RotateSpeed = 1.0f;
+    private float keyboard_Speed = 5f;
+
+    private MyAnimatorController myAnimatorController;
 
 
     // Start is called before the first frame update
     void Start()
     {
         controller = transform.GetComponent<CharacterController>();
+        myAnimatorController = GetComponentInChildren<MyAnimatorController>();
+        if (myAnimatorController == null)
+        {
+            Debug.LogError("MyAnimatorController è„šæœ¬æœªæ‰¾åˆ°ï¼Œè¯·ç¡®ä¿å­å¯¹è±¡æ­£ç¡®æŒ‚è½½äº†è¯¥è„šæœ¬ï¼");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         MoveLikeWow();
+        keyboard_control();
     }
 
-    //Áä½L¾Ş±±
-    //private void MoveLikeWow()
-    //{
-    //    var horizontal = Input.GetAxis("Horizontal");
-    //    var vertical = Input.GetAxis("Vertical");
+    //éµç›¤æ“æ§
+    private void keyboard_control()
+    {
+        var horizontal = Input.GetAxis("Horizontal");
+        var vertical = Input.GetAxis("Vertical");
 
-    //    var move = transform.forward * Speed * vertical * Time.deltaTime;
-    //    controller.Move(move);
+        var move = transform.forward * keyboard_Speed * vertical * Time.deltaTime;
+        controller.Move(move);
 
-    //    transform.Rotate(Vector3.up, horizontal * RotateSpeed);
+        transform.Rotate(Vector3.up, horizontal * RotateSpeed);
 
-    //    Debug.Log(horizontal);
-    //}
+        //Debug.Log(horizontal);
+    }
 
     private void MoveLikeWow()
     {
-        // ±qµêÀÀ·n±ìÀò¨ú¿é¤J¤è¦V
-        if (virtualJoystick == null) return; // ½T«O joystick ¤£¬°ªÅ
-        // ±qµêÀÀ·n±ìÀò¨ú¿é¤J¤è¦V
+        // å¾è™›æ“¬æ–æ¡¿ç²å–è¼¸å…¥æ–¹å‘
+        if (virtualJoystick == null) return; // ç¢ºä¿ joystick ä¸ç‚ºç©º
+        // å¾è™›æ“¬æ–æ¡¿ç²å–è¼¸å…¥æ–¹å‘
         Vector2 joystickInput = virtualJoystick.inputDirection;
 
-        // ÀË¬d¬O§_¦³¿é¤J¤è¦V
-        if (joystickInput.sqrMagnitude > 0.001f) // Á×§K³B²z·¥¤p¿é¤J¡A¨¾¤îª«¥ó§İ°Ê
+        // æª¢æŸ¥æ˜¯å¦æœ‰è¼¸å…¥æ–¹å‘
+        if (joystickInput.sqrMagnitude > 0.001f) // é¿å…è™•ç†æ¥µå°è¼¸å…¥ï¼Œé˜²æ­¢ç‰©ä»¶æŠ–å‹•
         {
-            // ¨Ï¥ÎCharacterController­pºâ²¾°Ê¤è¦V©M³t«×
+            // ä½¿ç”¨CharacterControllerè¨ˆç®—ç§»å‹•æ–¹å‘å’Œé€Ÿåº¦
             Vector3 moveDirection = new Vector3(joystickInput.x, 0, joystickInput.y).normalized;
             var move = moveDirection * Speed * Time.deltaTime * Speedfactor;
             controller.Move(move);
             Debug.Log("move: " + move);
 
-            // ¨Ï¥Îtransform²¾°Êª«¥ó
+            // ä½¿ç”¨transformç§»å‹•ç‰©ä»¶
             //transform.Translate(moveDirection * Speed * Time.deltaTime, Space.World);
 
-            // ­pºâª«¥óÀ³´Â¦Vªº¤è¦V
+            // è¨ˆç®—ç‰©ä»¶æ‡‰æœå‘çš„æ–¹å‘
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotateSpeed * Time.deltaTime);
             transform.rotation = targetRotation;
         }
     }
 
-    // ·s¼W¤èªkÅı¥~³¡³]©wµêÀÀ·n±ì
+    // æ–°å¢æ–¹æ³•è®“å¤–éƒ¨è¨­å®šè™›æ“¬æ–æ¡¿
     public void SetVirtualJoystick(VirtualJoystick joystick)
     {
         virtualJoystick = joystick;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // æ£€æŸ¥ç¢°æ’åˆ°çš„ç‰©ä½“æ˜¯å¦æ˜¯éš¾æ°‘
+        if (other.CompareTag("Refugee"))
+        {
+            RefugeeControllor refugee = other.GetComponent<RefugeeControllor>();
+            if (refugee != null)
+            {
+                // è§¦å‘éš¾æ°‘çš„æ­»äº¡æ–¹æ³•
+                refugee.RefugeeDie();
+
+                // è§¦å‘æé¾™çš„æ”»å‡»åŠ¨ç”»
+                if (myAnimatorController != null)
+                {
+                    myAnimatorController.ShowAttack();
+                }
+            }
+        }
+    }
+
 }

@@ -23,6 +23,9 @@ public class ReticleBehaviour : MonoBehaviour
     public GameObject JoystickObject;  // 存放在Canvas中JoystickObject的物件
     public VirtualJoystick joystick; // 把joystick在 Canvas 中的虛擬搖桿腳本拉過來，之後會動態生成傳給生成物件
 
+    // AR遊戲的場景
+    public GameObject ARplanePrefab; // 在 Inspector 中手動拖入的平面預置物件
+
     private void Start()
     {
         // 設置按鈕初始狀態為隱藏
@@ -111,12 +114,35 @@ public class ReticleBehaviour : MonoBehaviour
                 Debug.LogError("Prefab 或 Joystick 未設置！");
                 return;
             }
-            // var obj = GameObject.Instantiate(ARObject[trackedImageIndex]);
-            // obj.transform.position = transform.position;
-            // 真正生成物件
-            SpawnedObject = Instantiate(PreviewObject, transform.position, PreviewObject.transform.rotation); // 保留預覽物件的旋轉
+
+            // 生成一個空物件
+            GameObject parentObject = new GameObject("ARParentObject");
+            parentObject.transform.position = PreviewObject.transform.position; // 設置位置與 PreviewObject 相同
+            parentObject.transform.rotation = PreviewObject.transform.rotation; // 設置方向與 PreviewObject 相同
+
+            // 在空物件下生成 SpawnedObject
+            SpawnedObject = Instantiate(PreviewObject); // 從 PreviewObject 生成新的物件
+            SpawnedObject.transform.SetParent(parentObject.transform); // 設置父物件為剛生成的空物件
+
+            // 將 SpawnedObject 的本地位置設置為 (0, 0, 0)
+            SpawnedObject.transform.localPosition = Vector3.zero;
+            SpawnedObject.transform.localRotation = Quaternion.identity; // 重置本地旋轉
             SpawnedObject.SetActive(true);
-            DrivingSurfaceManager.LockPlane(CurrentPlane);
+
+            // 直接生成平面
+            if (ARplanePrefab != null) // 確保已經在 Inspector 設置了平面預置物件
+            {
+                GameObject plane = Instantiate(ARplanePrefab, parentObject.transform); // 生成平面，並設置父物件
+                plane.transform.localPosition = Vector3.zero; // 與 parentObject 對齊
+                plane.transform.localRotation = Quaternion.identity; // 重置旋轉
+            }
+            else
+            {
+                Debug.LogError("Plane Prefab 未在 Inspector 設置！");
+            }
+
+
+            DrivingSurfaceManager.LockPlane(CurrentPlane); // 鎖定當前平面
 
             // 動態設定虛擬搖桿
             PlayerMovement playerMovement = SpawnedObject.GetComponent<PlayerMovement>();
@@ -139,11 +165,9 @@ public class ReticleBehaviour : MonoBehaviour
 
             isObjectCreated = true;
 
-
             // 隱藏預覽物件和按鈕
             PreviewObject.SetActive(false);
             SpawnButton.SetActive(false);
-            // JoystickObject.SetActive(true);
         }
     }
 

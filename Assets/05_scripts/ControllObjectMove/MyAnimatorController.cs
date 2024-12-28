@@ -20,33 +20,33 @@ public class MyAnimatorController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (virtualJoystick == null) return; // 如果沒有虛擬搖桿，跳過
-        // 取得搖桿的輸出方向
-        Vector2 direction = virtualJoystick.inputDirection;
+        //if (virtualJoystick == null) return; // 如果沒有虛擬搖桿，跳過
+        //// 取得搖桿的輸出方向
+        //Vector2 direction = virtualJoystick.inputDirection;
 
-        if (direction != Vector2.zero)
-        {
-            ShowRun(); // 播放跑步動畫
-        }
-        else
-        {
-            ShowIdle(); // 回到待機動畫
-        }
+        //if (direction != Vector2.zero)
+        //{
+        //    ShowRun(); // 播放跑步動畫
+        //}
+        //else
+        //{
+        //    ShowIdle(); // 回到待機動畫
+        //}
 
         // 檢測是否按下空白鍵
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ShowAttack();
         }
-        //// 檢查是否按下 W, A, S, D 按鍵
-        //if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
-        //{
-        //    ShowRun();
-        //}
-        //else
-        //{
-        //    ShowIdle();
-        //}
+        // 檢查是否按下 W, A, S, D 按鍵
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
+        {
+            ShowRun();
+        }
+        else
+        {
+            ShowIdle();
+        }
     }
     //新增方法讓ReticleBehaviour在生成物件時，可以從外部設定虛擬搖桿
     public void SetVirtualJoystick(VirtualJoystick joystick)
@@ -54,7 +54,7 @@ public class MyAnimatorController : MonoBehaviour
         this.virtualJoystick = joystick; // 設置虛擬搖桿
     }
 
-    private void ShowAttack()
+    public void ShowAttack()
     {
         animator.SetTrigger("T_isAttack");
     }
